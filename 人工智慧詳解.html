@@ -1,0 +1,477 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>人工智慧期中考詳解</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 單欄講義，每題一個「圖＋狀態面板」操作區，窄螢幕改為上下堆疊 */
+:root{
+  --bg:#f5f7fa; --paper:#ffffff; --fg:#1d2733; --muted:#5d6b7c; --line:#d5dde7;
+  --accent:#1f5fbf; --accent-soft:#dbe7fa; --goal:#9aa3ad; --goal-fg:#ffffff;
+  --ok:#1d7a4a; --ok-soft:#dcf1e5; --bad:#b4372b; --bad-soft:#f8e1de; --warn-soft:#fff3d6;
+  --display:"Noto Serif TC","Songti TC",serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171e; --paper:#1a212b; --fg:#e3e9f0; --muted:#97a4b4; --line:#2e3946;
+  --accent:#6aa1ff; --accent-soft:#1f3354; --goal:#5b6573; --goal-fg:#ffffff;
+  --ok:#5fcf93; --ok-soft:#173a29; --bad:#ff8a7d; --bad-soft:#40201d; --warn-soft:#3a3120; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171e; --paper:#1a212b; --fg:#e3e9f0; --muted:#97a4b4; --line:#2e3946;
+  --accent:#6aa1ff; --accent-soft:#1f3354; --goal:#5b6573; --goal-fg:#ffffff;
+  --ok:#5fcf93; --ok-soft:#173a29; --bad:#ff8a7d; --bad-soft:#40201d; --warn-soft:#3a3120; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.75;padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:clamp(28px,5vw,40px);font-weight:900}
+h2{font-size:24px;font-weight:900}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;font-family:var(--mono)}
+.lead{color:var(--muted);max-width:68ch}
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.prose{max-width:70ch;display:flex;flex-direction:column;gap:10px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.rule{border-left:3px solid var(--accent);padding:4px 12px;font-size:14px}
+.rule b{display:block}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{font:inherit;font-size:14px;border:1px solid var(--line);background:transparent;color:var(--fg);padding:6px 14px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.tab:focus-visible,.btn:focus-visible,.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.algo-intro{background:var(--accent-soft);border-radius:8px;padding:12px 16px;font-size:14px}
+.algo-intro code{font-family:var(--mono)}
+.stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:760px){.stage{grid-template-columns:1fr}}
+.figure{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.figure svg{display:block;width:100%;min-width:520px;height:auto}
+.panel{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stepline{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.note{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-height:5.5em;font-size:14.5px}
+.note.done{background:var(--ok-soft);border-color:var(--ok)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px;align-items:baseline}
+.kv dt{color:var(--muted);white-space:nowrap}
+.kv dd{margin:0;font-family:var(--mono);font-size:13px;word-break:break-word}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left}
+th{color:var(--muted);font-weight:500;font-size:12.5px}
+td.mono{font-family:var(--mono)}
+tr.next td{background:var(--accent-soft)}
+.tablebox{overflow-x:auto}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--paper);color:var(--fg);padding:6px 14px;border-radius:6px;cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.callout{background:var(--warn-soft);border-radius:8px;padding:12px 16px;font-size:14px}
+.summary td:first-child{white-space:nowrap}
+/* SVG */
+svg text{font-family:var(--mono);fill:var(--fg)}
+.edge line{stroke:var(--muted);stroke-width:1.5}
+.edge text{font-size:13px;fill:var(--muted)}
+.edge.path line{stroke:var(--accent);stroke-width:3.5}
+.edge.path text{fill:var(--accent);font-weight:600}
+.node circle{fill:var(--paper);stroke:var(--fg);stroke-width:1.5}
+.node.goal circle{fill:var(--goal)}
+.node.goal text.lbl{fill:var(--goal-fg)}
+.node text.lbl{font-size:16px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+.node .hd{fill:var(--paper);stroke:var(--fg);stroke-width:1}
+.node .hv{font-size:11px;text-anchor:middle;dominant-baseline:central}
+.node.frontier circle{stroke:var(--accent);stroke-dasharray:4 3;stroke-width:2.5}
+.node.explored circle{fill:var(--accent-soft);stroke:var(--accent)}
+.node.explored.goal circle{fill:var(--goal)}
+.node.current circle{stroke:var(--accent);stroke-width:4;stroke-dasharray:none}
+.node .ord{font-size:11px;fill:var(--accent);font-weight:600;text-anchor:middle}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);padding:8px 12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--fg);display:inline-block}
+.sw.f{border:2px dashed var(--accent)}
+.sw.e{background:var(--accent-soft);border-color:var(--accent)}
+.sw.g{background:var(--goal)}
+.sw.c{border:3px solid var(--accent)}
+/* game tree */
+.tedge line{stroke:var(--muted);stroke-width:1.5}
+.tedge.best line{stroke:var(--accent);stroke-width:3.5}
+.tedge.pruned line{stroke:var(--bad);stroke-dasharray:5 4;opacity:.7}
+.tnode circle{fill:var(--fg);stroke:var(--fg)}
+.tnode.cur circle{fill:var(--accent);stroke:var(--accent)}
+.tnode .nm{font-size:13px;font-weight:600}
+.tnode .val{font-size:15px;font-weight:600;fill:var(--accent)}
+.tnode .ab{font-size:10.5px;fill:var(--muted)}
+.tnode.leaf .val{fill:var(--fg)}
+.tnode.leaf.seen .val{fill:var(--ok)}
+.tnode.pruned{opacity:.35}
+.tnode.pruned .val{text-decoration:line-through}
+.lvl{font-size:12px;fill:var(--muted);font-family:var(--body)}
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:18px}
+.qitem{display:flex;flex-direction:column;gap:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--paper);color:var(--fg);padding:6px 12px;border-radius:6px;cursor:pointer}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.fb{font-size:14px;color:var(--muted)}
+.answer{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){.node circle,.tnode circle,.edge line,.tedge line{transition:all .2s}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <div class="eyebrow">AI Midterm · 詳解</div>
+    <h1>人工智慧期中考詳解</h1>
+    <p class="lead">第一題是狀態圖搜尋，五種演算法各自可以一步一步播放，看 frontier 怎麼變化；第二題是 minimax 賽局樹，另外附上 alpha-beta 剪枝的延伸練習。最後有幾題小測驗可以自我檢查。</p>
+  </header>
+
+  <section class="q" id="q1">
+    <div class="eyebrow">第 1 題</div>
+    <h2>狀態圖搜尋：五種演算法</h2>
+    <div class="prose">
+      <p>A 是起點，灰色節點（D、F、G）是目標。箭頭是有向邊，邊上的數字是行動成本，菱形裡的數字是啟發值 h(n)，代表從該節點到目標的估計成本。</p>
+    </div>
+    <div class="rules">
+      <div class="rule"><b>平手時依字母順序</b>同一層或同樣優先值時，字母小的先處理。</div>
+      <div class="rule"><b>取出時才做目標測試</b>節點從 frontier 被取出（要展開）時才判斷是不是目標，這是 UCS 與 A* 保證最佳解的做法，五題統一用這個規則。</div>
+      <div class="rule"><b>「拜訪」＝被取出的節點</b>答案列的拜訪順序，指依序被取出、展開或判定為目標的節點。</div>
+    </div>
+
+    <div class="tabs" role="tablist" id="algoTabs"></div>
+    <div class="algo-intro" id="algoIntro"></div>
+
+    <div class="stage">
+      <div class="figure">
+        <svg id="graph" viewBox="0 0 600 300" aria-label="第一題狀態圖"></svg>
+        <div class="legend">
+          <span><i class="sw c"></i>本步取出</span>
+          <span><i class="sw f"></i>在 frontier 中</span>
+          <span><i class="sw e"></i>已展開</span>
+          <span><i class="sw g"></i>目標狀態</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="stepline"><span id="stepNo">步驟 0</span><span id="stepAlgo"></span></div>
+        <div class="note" id="note"></div>
+        <div class="tablebox">
+          <table>
+            <thead><tr id="fhead"></tr></thead>
+            <tbody id="fbody"></tbody>
+          </table>
+        </div>
+        <dl class="kv">
+          <dt>已展開</dt><dd id="explored">—</dd>
+          <dt>拜訪順序</dt><dd id="visited">—</dd>
+        </dl>
+        <div class="controls">
+          <button class="btn" id="prev">上一步</button>
+          <button class="btn primary" id="next">下一步</button>
+          <button class="btn" id="play">自動播放</button>
+          <button class="btn" id="reset">重來</button>
+          <button class="btn" id="toEnd">直接看結果</button>
+        </div>
+      </div>
+    </div>
+
+    <h3>五種演算法答案總表</h3>
+    <div class="tablebox">
+      <table class="summary">
+        <thead><tr><th>演算法</th><th>frontier 依據</th><th>拜訪順序</th><th>回傳路徑</th><th>路徑成本</th></tr></thead>
+        <tbody id="summary"></tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <b>對照考卷上的筆記</b><br>
+      DFS 那行寫了 A→B→E→B→F，這其實是「走訪過程」：走到 E 是死路，退回 B 再走 F。題目要的回傳路徑是 A→B→F（成本 3），拜訪過的節點是 A、B、E、F。退回 B 只是回溯，不算重新拜訪 B。<br>
+      邊旁的筆記方向是對的：UCS 只看已走的邊成本 g(n)；Greedy 只看節點上的 h(n)；A* 兩個加起來看 f(n)=g(n)+h(n)，也就是筆記寫的「edge + node」。
+    </div>
+  </section>
+
+  <section class="q" id="q2">
+    <div class="eyebrow">第 2 題</div>
+    <h2>賽局樹：Minimax</h2>
+    <div class="prose">
+      <p>葉節點的分數都是從先手（MAX）的角度算的。A 是 MAX，第二層 B、C、D 輪到對手 MIN，第三層 E～K 又輪到 MAX，葉節點 L～Y 是靜態評估值。由下往上：MAX 層取子節點最大值，MIN 層取最小值。</p>
+    </div>
+
+    <div class="tabs" role="tablist" id="gameTabs">
+      <button class="tab" role="tab" aria-selected="true" data-mode="mm">Minimax 計算</button>
+      <button class="tab" role="tab" aria-selected="false" data-mode="ab">延伸：Alpha-Beta 剪枝</button>
+    </div>
+    <div class="algo-intro" id="gameIntro"></div>
+
+    <div class="figure">
+      <svg id="tree" viewBox="0 0 840 340" aria-label="第二題賽局樹"></svg>
+    </div>
+    <div class="panel">
+      <div class="stepline"><span id="gStepNo">步驟 0</span><span id="gMode"></span></div>
+      <div class="note" id="gNote"></div>
+      <div class="controls">
+        <button class="btn" id="gPrev">上一步</button>
+        <button class="btn primary" id="gNext">下一步</button>
+        <button class="btn" id="gPlay">自動播放</button>
+        <button class="btn" id="gReset">重來</button>
+        <button class="btn" id="gEnd">直接看結果</button>
+      </div>
+    </div>
+
+    <h3>計算結果</h3>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>節點</th><th>層</th><th>計算</th><th>值</th></tr></thead>
+        <tbody>
+          <tr><td>E, F, G</td><td>MAX</td><td class="mono">max(2,3)=3　max(8,5)=8　max(7,6)=7</td><td class="mono">3, 8, 7</td></tr>
+          <tr><td>H, I</td><td>MAX</td><td class="mono">max(0,1)=1　max(5,2)=5</td><td class="mono">1, 5</td></tr>
+          <tr><td>J, K</td><td>MAX</td><td class="mono">max(8,4)=8　max(10,2)=10</td><td class="mono">8, 10</td></tr>
+          <tr><td>B, C, D</td><td>MIN</td><td class="mono">min(3,8,7)=3　min(1,5)=1　min(8,10)=8</td><td class="mono">3, 1, 8</td></tr>
+          <tr><td>A</td><td>MAX</td><td class="mono">max(3,1,8)=8</td><td class="mono">8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>答案：先手應該選 <span class="answer">A → D</span>，minimax 值為 8。雙方都照最佳策略走的話，預期路線是 A→D→J→V。考卷上寫的 A→D→J→V 和各節點的值都正確；嚴格來說題目問的是「這一步」，回答「走 D」即可，後面的 J→V 是預期的後續。</p>
+    <div class="callout">
+      <b>為什麼不走 F 那邊的 8？</b>F 的值也是 8，但 F 在 B 底下，B 是 MIN 節點，對手會在 E、F、G 裡挑最小的 E=3 給你，所以走 B 只能拿到 3。D 底下最差也有 J=8，對手阻止不了。
+    </div>
+  </section>
+
+  <section class="q" id="quiz">
+    <div class="eyebrow">自我檢查</div>
+    <h2>小測驗</h2>
+    <div class="quiz" id="quizBox"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+const SVGNS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+
+/* ---------- 第一題資料 ---------- */
+const G={A:[['B',2],['C',1],['D',3]],B:[['E',2],['F',1]],C:[['G',1],['H',3]],D:[['J',1],['K',1]],E:[],F:[],G:[],H:[],J:[],K:[]};
+const H={A:2,B:1,C:1,D:0,E:0,F:0,G:0,H:0,J:0,K:0};
+const GOALS=new Set(['D','F','G']);
+const POS={A:[300,45],B:[140,145],C:[300,145],D:[460,145],E:[75,250],F:[180,250],G:[260,250],H:[340,250],J:[420,250],K:[525,250]};
+const ALGOS={
+  dfs:{name:'DFS 深度優先',short:'DFS',basis:'堆疊（後進先出），忽略成本',intro:'<b>深度優先搜尋</b>：frontier 是堆疊（LIFO），最後放進去的最先拿出來，所以會一路往深處走到底再回頭。完全不看成本，也不看 h。'},
+  bfs:{name:'BFS 廣度優先',short:'BFS',basis:'佇列（先進先出），忽略成本',intro:'<b>廣度優先搜尋</b>：frontier 是佇列（FIFO），一層一層往外擴。完全不看成本，所以找到的是「步數最少」的目標，不一定最便宜。'},
+  ucs:{name:'UCS 均一成本',short:'UCS',basis:'g(n)：起點到 n 的累積成本',intro:'<b>均一成本搜尋</b>：每次取出 <code>g(n)</code> 最小的節點，g 是從 A 一路走過來的邊成本總和。只看已花的成本，不看 h。'},
+  greedy:{name:'Greedy 貪婪',short:'Greedy',basis:'h(n)：啟發值',intro:'<b>貪婪最佳優先搜尋</b>：每次取出 <code>h(n)</code> 最小的節點，只看「離目標估計還有多遠」，不管已經花了多少。'},
+  astar:{name:'A* 搜尋',short:'A*',basis:'f(n)=g(n)+h(n)',intro:'<b>A* 搜尋</b>：每次取出 <code>f(n)=g(n)+h(n)</code> 最小的節點，同時考慮已花成本與估計剩餘成本。本題的 h 可採納（不會高估），所以 A* 找到的是最佳解。'}
+};
+const ORDER=['dfs','bfs','ucs','greedy','astar'];
+const pri=(algo,e)=>algo==='ucs'?e.g:algo==='greedy'?H[e.n]:algo==='astar'?e.g+H[e.n]:null;
+function priText(algo,e){
+  if(algo==='ucs')return 'g='+e.g;
+  if(algo==='greedy')return 'h='+H[e.n];
+  if(algo==='astar')return 'f='+e.g+'+'+H[e.n]+'='+(e.g+H[e.n]);
+  return '';
+}
+function runSearch(algo){
+  let fr=[{n:'A',g:0,path:['A']}];const explored=[];const visited=[];const steps=[];
+  const isPQ=['ucs','greedy','astar'].includes(algo);
+  const sortPQ=()=>{if(isPQ)fr.sort((x,y)=>pri(algo,x)-pri(algo,y)||x.n.localeCompare(y.n));};
+  const disp=()=>{sortPQ();const l=fr.map(e=>({...e,path:[...e.path]}));return algo==='dfs'?l.reverse():l;};
+  steps.push({cur:null,fr:disp(),explored:[],visited:[],note:'初始狀態：把起點 A 放進 frontier。按「下一步」開始。'});
+  while(fr.length){
+    sortPQ();
+    const e=algo==='dfs'?fr.pop():fr.shift();
+    visited.push(e.n);
+    const how=algo==='dfs'?'從堆疊頂端取出':algo==='bfs'?'從佇列最前面取出':'取出優先值最小的';
+    const pt=isPQ?'（'+priText(algo,e)+'）':'';
+    if(GOALS.has(e.n)){
+      steps.push({cur:e.n,fr:disp(),explored:[...explored],visited:[...visited],done:true,path:e.path,cost:e.g,
+        note:how+' '+e.n+pt+'，'+e.n+' 是目標，搜尋結束。回傳路徑 '+e.path.join('→')+'，成本 '+e.g+'。'});
+      return steps;
+    }
+    explored.push(e.n);
+    const kids=G[e.n];const added=[];
+    const list=algo==='dfs'?[...kids].reverse():kids;
+    for(const [c,w] of list){
+      if(explored.includes(c))continue;
+      const ng=e.g+w;const ex=fr.find(x=>x.n===c);
+      if(ex){if(isPQ&&ng<ex.g){ex.g=ng;ex.path=[...e.path,c];}continue;}
+      const ne={n:c,g:ng,path:[...e.path,c]};fr.push(ne);added.push(ne);
+    }
+    const shown=algo==='dfs'?[...added].reverse():added;
+    let note=how+' '+e.n+pt+'，不是目標，展開。';
+    if(shown.length){note+='加入子節點 '+shown.map(x=>x.n+(isPQ?'（'+priText(algo,x)+'）':'')).join('、')+'。';}
+    else note+=e.n+' 沒有子節點，是死路，'+(algo==='dfs'?'回溯到堆疊裡的下一個節點。':'繼續處理 frontier。');
+    if(algo==='ucs'&&e.n==='C')note+=' 現在 B 和 G 都是 g=2，依字母順序下一步先取 B。';
+    if(algo==='bfs'&&e.n==='A')note+=' 注意 D 已經在 frontier 裡，但要等它被取出才做目標測試。';
+    steps.push({cur:e.n,fr:disp(),explored:[...explored],visited:[...visited],added:added.map(x=>x.n),note});
+  }
+  return steps;
+}
+const RESULTS={};ORDER.forEach(a=>RESULTS[a]=runSearch(a));
+
+/* 畫圖 */
+const svg=document.getElementById('graph');
+const edgeEls={},nodeEls={};
+el('defs',{},svg).innerHTML='<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>';
+for(const p in G){for(const [c,w] of G[p]){
+  const [x1,y1]=POS[p],[x2,y2]=POS[c];const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),r=20;
+  const g=el('g',{class:'edge'},svg);
+  el('line',{x1:x1+dx/L*r,y1:y1+dy/L*r,x2:x2-dx/L*(r+3),y2:y2-dy/L*(r+3),'marker-end':'url(#arr)'},g);
+  const mx=(x1+x2)/2,my=(y1+y2)/2;const ox=-dy/L*12,oy=dx/L*12;
+  el('text',{x:mx+ox,y:my+oy,'text-anchor':'middle','dominant-baseline':'central'},g,w);
+  edgeEls[p+c]=g;
+}}
+for(const n in POS){
+  const [x,y]=POS[n];const g=el('g',{class:'node'+(GOALS.has(n)?' goal':'')},svg);
+  el('circle',{cx:x,cy:y,r:20},g);
+  el('text',{x,y,class:'lbl'},g,n);
+  const hx=x+24,hy=y-20;
+  el('rect',{x:hx-8,y:hy-8,width:16,height:16,class:'hd',transform:`rotate(45 ${hx} ${hy})`},g);
+  el('text',{x:hx,y:hy,class:'hv'},g,H[n]);
+  const o=el('text',{x:x-26,y:y-18,class:'ord'},g,'');
+  nodeEls[n]={g,o};
+}
+
+/* 控制 */
+let algo='dfs',idx=0,timer=null;
+const tabs=document.getElementById('algoTabs');
+ORDER.forEach(a=>{const b=document.createElement('button');b.className='tab';b.role='tab';b.textContent=ALGOS[a].name;b.dataset.a=a;b.setAttribute('aria-selected',a===algo);b.onclick=()=>{algo=a;idx=0;stop();[...tabs.children].forEach(t=>t.setAttribute('aria-selected',t.dataset.a===a));render();};tabs.appendChild(b);});
+const $=id=>document.getElementById(id);
+function render(){
+  const steps=RESULTS[algo],s=steps[idx];
+  $('algoIntro').innerHTML=ALGOS[algo].intro;
+  $('stepNo').textContent='步驟 '+idx+' / '+(steps.length-1);
+  $('stepAlgo').textContent=ALGOS[algo].short;
+  const n=$('note');n.textContent=s.note;n.classList.toggle('done',!!s.done);
+  const isPQ=['ucs','greedy','astar'].includes(algo);
+  const cols=['節點','路徑','g'];if(algo==='greedy'||algo==='astar')cols.push('h');if(algo==='astar')cols.push('f');
+  $('fhead').innerHTML='<th>順位</th>'+cols.map(c=>'<th>'+c+'</th>').join('');
+  $('fbody').innerHTML=s.fr.length?s.fr.map((e,i)=>{
+    let r='<td class="mono">'+(i+1)+'</td><td class="mono">'+e.n+'</td><td class="mono">'+e.path.join('→')+'</td><td class="mono">'+e.g+'</td>';
+    if(algo==='greedy'||algo==='astar')r+='<td class="mono">'+H[e.n]+'</td>';
+    if(algo==='astar')r+='<td class="mono">'+(e.g+H[e.n])+'</td>';
+    return '<tr class="'+(i===0&&!s.done?'next':'')+'">'+r+'</tr>';}).join(''):'<tr><td colspan="6">（frontier 為空）</td></tr>';
+  $('explored').textContent=s.explored.length?s.explored.join(', '):'—';
+  $('visited').textContent=s.visited.length?s.visited.join(' → '):'—';
+  const inFr=new Set(s.fr.map(e=>e.n));
+  const pathSet=new Set();
+  if(s.cur){const src=s.done?s.path:findPath(steps,idx);for(let i=0;i<src.length-1;i++)pathSet.add(src[i]+src[i+1]);}
+  for(const k in edgeEls)edgeEls[k].classList.toggle('path',pathSet.has(k));
+  for(const k in nodeEls){const {g,o}=nodeEls[k];
+    g.classList.toggle('frontier',inFr.has(k)&&!s.done);
+    g.classList.toggle('explored',s.explored.includes(k));
+    g.classList.toggle('current',k===s.cur);
+    const vi=s.visited.indexOf(k);o.textContent=vi>=0?'#'+(vi+1):'';}
+  $('prev').disabled=idx===0;$('next').disabled=idx===steps.length-1;$('toEnd').disabled=idx===steps.length-1;
+}
+function findPath(steps,i){const cur=steps[i].cur;for(let j=i-1;j>=0;j--){const f=steps[j].fr.find(e=>e.n===cur);if(f)return f.path;}return [cur];}
+function stop(){if(timer){clearInterval(timer);timer=null;$('play').textContent='自動播放';}}
+$('next').onclick=()=>{if(idx<RESULTS[algo].length-1){idx++;render();}};
+$('prev').onclick=()=>{stop();if(idx>0){idx--;render();}};
+$('reset').onclick=()=>{stop();idx=0;render();};
+$('toEnd').onclick=()=>{stop();idx=RESULTS[algo].length-1;render();};
+$('play').onclick=()=>{if(timer){stop();return;}if(idx>=RESULTS[algo].length-1)idx=0;$('play').textContent='暫停';render();timer=setInterval(()=>{if(idx<RESULTS[algo].length-1){idx++;render();}else stop();},1300);};
+
+$('summary').innerHTML=ORDER.map(a=>{const st=RESULTS[a],l=st[st.length-1];return '<tr><td>'+ALGOS[a].name+'</td><td>'+ALGOS[a].basis+'</td><td class="mono">'+l.visited.join(', ')+'</td><td class="mono"><b>'+l.path.join('→')+'</b></td><td class="mono">'+l.cost+'</td></tr>';}).join('');
+render();
+
+/* ---------- 第二題 ---------- */
+const T={A:['B','C','D'],B:['E','F','G'],C:['H','I'],D:['J','K'],E:['L','M'],F:['N','O'],G:['P','Q'],H:['R','S'],I:['T','U'],J:['V','W'],K:['X','Y']};
+const LEAF={L:2,M:3,N:8,O:5,P:7,Q:6,R:0,S:1,T:5,U:2,V:8,W:4,X:10,Y:2};
+const MAXN=new Set(['A','E','F','G','H','I','J','K']);
+const TP={A:[450,35],B:[170,115],C:[450,115],D:[705,115],E:[80,200],F:[170,200],G:[260,200],H:[405,200],I:[495,200],J:[660,200],K:[750,200]};
+const lx={L:58,M:102,N:148,O:192,P:238,Q:282,R:383,S:427,T:473,U:517,V:638,W:682,X:728,Y:772};
+for(const k in lx)TP[k]=[lx[k],285];
+const tsvg=document.getElementById('tree');const tE={},tN={};
+el('text',{x:8,y:39,class:'lvl'},tsvg,'MAX');el('text',{x:8,y:119,class:'lvl'},tsvg,'MIN');el('text',{x:8,y:204,class:'lvl'},tsvg,'MAX');
+for(const p in T)for(const c of T[p]){const [x1,y1]=TP[p],[x2,y2]=TP[c];const g=el('g',{class:'tedge'},tsvg);el('line',{x1,y1,x2,y2},g);tE[p+c]=g;}
+for(const n in TP){const [x,y]=TP[n];const leaf=n in LEAF;const g=el('g',{class:'tnode'+(leaf?' leaf':'')},tsvg);
+  el('circle',{cx:x,cy:y,r:6},g);
+  if(leaf){el('text',{x,y:y+22,class:'nm','text-anchor':'middle'},g,n);const v=el('text',{x,y:y+40,class:'val','text-anchor':'middle'},g,'('+LEAF[n]+')');tN[n]={g,v};}
+  else{const left=n==='A';el('text',{x:x-12,y:y-8,class:'nm','text-anchor':'end'},g,n);const v=el('text',{x:x+12,y:y-8,class:'val'},g,'');const ab=el('text',{x:x+12,y:y+20,class:'ab'},g,'');tN[n]={g,v,ab};}
+}
+const fmt=v=>v===Infinity?'+∞':v===-Infinity?'−∞':v;
+const descend=n=>{const out=[n];(T[n]||[]).forEach(c=>out.push(...descend(c)));return out;};
+function mmSteps(){
+  const st=[];const vals={};
+  st.push({vals:{},note:'葉節點的值已知。從最左下的 MAX 節點開始，由下往上算。',cur:null});
+  function go(n){if(n in LEAF)return LEAF[n];const cv=T[n].map(go);const v=MAXN.has(n)?Math.max(...cv):Math.min(...cv);vals[n]=v;
+    const f=MAXN.has(n)?'max':'min';
+    st.push({vals:{...vals},cur:n,note:n+' 是 '+(MAXN.has(n)?'MAX':'MIN')+' 節點，子節點 '+T[n].join('、')+' 的值為 '+cv.join('、')+'，取 '+f+'('+cv.join(',')+') = '+v+'。'+(n==='A'?' 先手應走向值最大的 D。':'')});return v;}
+  go('A');
+  st[st.length-1].best=['AD','DJ','JV'];st[st.length-1].done=true;
+  return st;
+}
+function abSteps(){
+  const st=[];const vals={},abm={},seen=new Set(),pruned=new Set();let prunedEdges=new Set();
+  const snap=(cur,note,extra)=>st.push(Object.assign({vals:{...vals},ab:JSON.parse(JSON.stringify(abm)),seen:new Set(seen),pruned:new Set(pruned),pe:new Set(prunedEdges),cur,note},extra||{}));
+  snap(null,'由左到右做深度優先。每個節點帶著 α（MAX 目前保證拿得到的下限）與 β（MIN 目前保證壓得住的上限），一旦 α ≥ β 就停止看剩下的子節點。');
+  function ab(n,a,b){
+    if(n in LEAF){seen.add(n);snap(n,'評估葉節點 '+n+' = '+LEAF[n]+'。');return LEAF[n];}
+    const isMax=MAXN.has(n);let v=isMax?-Infinity:Infinity;abm[n]=[a,b];
+    snap(n,'進入 '+n+'（'+(isMax?'MAX':'MIN')+'），α='+fmt(a)+'，β='+fmt(b)+'。');
+    const ks=T[n];
+    for(let i=0;i<ks.length;i++){
+      const cv=ab(ks[i],a,b);
+      if(isMax){v=Math.max(v,cv);vals[n]=v;
+        if(v>=b){const rest=ks.slice(i+1);rest.forEach(r=>{descend(r).forEach(d=>pruned.add(d));prunedEdges.add(n+r);descend(r).forEach(d=>(T[d]||[]).forEach(c=>prunedEdges.add(d+c)));});
+          snap(n,n+' 目前 ≥ '+v+'，已經 ≥ β='+fmt(b)+'。上層 MIN 節點手上已有更小的 '+fmt(b)+'，不會讓先手走到這裡，所以剪掉 '+rest.join('、')+'。',{});return v;}
+        a=Math.max(a,v);}
+      else{v=Math.min(v,cv);vals[n]=v;
+        if(v<=a){const rest=ks.slice(i+1);rest.forEach(r=>{descend(r).forEach(d=>pruned.add(d));prunedEdges.add(n+r);descend(r).forEach(d=>(T[d]||[]).forEach(c=>prunedEdges.add(d+c)));});
+          snap(n,n+' 目前 ≤ '+v+'，已經 ≤ α='+fmt(a)+'。先手在 A 已經有保證拿到 '+fmt(a)+' 的走法，不會選 '+n+'，所以剪掉 '+rest.map(r=>r+(T[r]?'（含 '+T[r].join('、')+'）':'')).join('、')+'。');return v;}
+        b=Math.min(b,v);}
+      abm[n]=[a,b];
+      if(i<ks.length-1)snap(n,n+' 看完 '+ks[i]+' 後暫定值 '+v+'，更新為 α='+fmt(a)+'，β='+fmt(b)+'。');
+    }
+    snap(n,n+' 的子節點都看完了，值為 '+v+'。');return v;
+  }
+  ab('A',-Infinity,Infinity);
+  const last=st[st.length-1];last.done=true;last.best=['AD','DJ','JV'];
+  last.note='完成。A = 8，結果和完整 minimax 相同。被剪掉的有 O、Q、I（含 T、U）、Y，共少評估 5 個葉節點。';
+  return st;
+}
+const GS={mm:mmSteps(),ab:abSteps()};
+const GI={mm:'由下往上逐一計算：MAX 層取最大、MIN 層取最小。按「下一步」看每個節點怎麼算出來。',
+          ab:'Alpha-beta 剪枝會得到和 minimax 一樣的答案，但可以略過不影響結果的分支。考卷這頁只到第 1 小題，後面若有剪枝的題目可以用這裡練習。綠色葉節點代表實際被評估，紅色虛線代表被剪掉。'};
+let gm='mm',gi=0,gt=null;
+document.querySelectorAll('#gameTabs .tab').forEach(b=>b.onclick=()=>{gm=b.dataset.mode;gi=0;gstop();document.querySelectorAll('#gameTabs .tab').forEach(t=>t.setAttribute('aria-selected',t===b));grender();});
+function grender(){
+  const st=GS[gm],s=st[gi];
+  $('gameIntro').textContent=GI[gm];
+  $('gStepNo').textContent='步驟 '+gi+' / '+(st.length-1);$('gMode').textContent=gm==='mm'?'Minimax':'Alpha-Beta';
+  const n=$('gNote');n.textContent=s.note;n.classList.toggle('done',!!s.done);
+  const best=new Set(s.best||[]);
+  for(const k in tE){tE[k].classList.toggle('best',best.has(k));tE[k].classList.toggle('pruned',gm==='ab'&&s.pe.has(k));}
+  for(const k in tN){const o=tN[k];o.g.classList.toggle('cur',k===s.cur);
+    if(k in LEAF){o.g.classList.toggle('seen',gm==='ab'&&s.seen.has(k));o.g.classList.toggle('pruned',gm==='ab'&&s.pruned.has(k));}
+    else{o.v.textContent=k in s.vals?s.vals[k]:'';
+      o.g.classList.toggle('pruned',gm==='ab'&&s.pruned.has(k));
+      o.ab.textContent=(gm==='ab'&&s.ab[k])?'α='+fmt(s.ab[k][0])+' β='+fmt(s.ab[k][1]):'';}
+  }
+  $('gPrev').disabled=gi===0;$('gNext').disabled=gi===st.length-1;$('gEnd').disabled=gi===st.length-1;
+}
+function gstop(){if(gt){clearInterval(gt);gt=null;$('gPlay').textContent='自動播放';}}
+$('gNext').onclick=()=>{if(gi<GS[gm].length-1){gi++;grender();}};
+$('gPrev').onclick=()=>{gstop();if(gi>0){gi--;grender();}};
+$('gReset').onclick=()=>{gstop();gi=0;grender();};
+$('gEnd').onclick=()=>{gstop();gi=GS[gm].length-1;grender();};
+$('gPlay').onclick=()=>{if(gt){gstop();return;}if(gi>=GS[gm].length-1)gi=0;$('gPlay').textContent='暫停';grender();gt=setInterval(()=>{if(gi<GS[gm].length-1){gi++;grender();}else gstop();},1200);};
+grender();
+
+/* ---------- 小測驗 ---------- */
+const QZ=[
+ {q:'第 1 題中，DFS 最後回傳的路徑是？',o:['A→B→E→B→F','A→B→F','A→B→E','A→D'],a:1,e:'E 是死路，回溯後從 B 走到 F。回傳的是從起點到目標的路徑 A→B→F，回溯過程不算在路徑裡。'},
+ {q:'哪幾個演算法回傳了成本最低（成本 2）的路徑？',o:['BFS 和 Greedy','DFS 和 BFS','UCS 和 A*','只有 A*'],a:2,e:'UCS 與 A* 都回傳 A→C→G，成本 1+1=2。BFS 和 Greedy 回傳 A→D（成本 3），DFS 回傳 A→B→F（成本 3）。'},
+ {q:'Greedy 搜尋展開 A 之後，為什麼下一個就取出 D？',o:['D 的邊成本最小','D 的 h 值是 0，比 B、C 的 1 小','D 在字母順序最後','D 是最淺的目標'],a:1,e:'Greedy 只看 h(n)。B、C 的 h 都是 1，D 是 0，所以先取 D，而 D 剛好是目標。它不管 A→D 的成本是 3。'},
+ {q:'UCS 展開 C 之後，B 和 G 的 g 都是 2，下一步取誰？',o:['G，因為它是目標','B，依字母順序','兩個同時取','D'],a:1,e:'依字母順序先取 B。取出時才做目標測試，所以 G 雖是目標也要排隊。展開 B 後 G（g=2）仍是最小，接著取出 G 結束。'},
+ {q:'第 2 題中，B 節點的 minimax 值是多少？',o:['8','7','3','2'],a:2,e:'E=3、F=8、G=7，B 是 MIN 節點取最小值 3。'},
+ {q:'Alpha-beta 剪枝時，算完 H=1 為什麼可以不看 I？',o:['因為 I 的值比較小','C 是 MIN，值最多是 1；A 已經有保證拿到 3 的 B，不會選 C','因為 I 是最後一個子節點','因為 H 是葉節點'],a:1,e:'此時 α=3（來自 B）。C 是 MIN 節點，H=1 表示 C ≤ 1 < 3，不管 I 是多少，先手都不會走 C，所以 I 和底下的 T、U 都可以剪掉。'}
+];
+const qb=document.getElementById('quizBox');
+QZ.forEach((it,qi)=>{const d=document.createElement('div');d.className='qitem';
+  d.innerHTML='<h3>'+(qi+1)+'. '+it.q+'</h3>';
+  const ops=document.createElement('div');ops.className='opts';const fb=document.createElement('p');fb.className='fb';
+  it.o.forEach((t,oi)=>{const b=document.createElement('button');b.className='opt';b.id='q'+qi+'o'+oi;b.textContent=t;
+    b.onclick=()=>{[...ops.children].forEach(x=>x.classList.remove('right','wrong'));
+      if(oi===it.a){b.classList.add('right');fb.textContent='答對了。'+it.e;}else{b.classList.add('wrong');fb.textContent='不對，再想想，或按「看解答」。';}};
+    ops.appendChild(b);});
+  const rv=document.createElement('button');rv.className='btn';rv.textContent='看解答';rv.style.alignSelf='flex-start';
+  rv.onclick=()=>{[...ops.children].forEach((x,i)=>x.classList.toggle('right',i===it.a));fb.textContent=it.e;};
+  d.append(ops,fb,rv);qb.appendChild(d);});
+})();
+</script>
+
+</body></html>
